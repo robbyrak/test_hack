@@ -4,15 +4,26 @@ set serialNumber to do shell script "system_profiler SPHardwareDataType | awk '/
 -- Get the computer's OS version
 set osVersion to do shell script "sw_vers -productVersion"
 
--- Define the path to the tmp directory and the filename for storing the information
+-- Define the IP address and port to reach out to
+set ipAddress to "192.168.1.100"
+set port to "8080"
+
+-- Define the path to the tmp directory and the plist filename
 set tmpDirectory to "/tmp/"
-set filename to "computer_info.txt"
-set filePath to (tmpDirectory & filename)
+set plistFilename to "remote_info.plist"
+set plistFilePath to (tmpDirectory & plistFilename)
 
--- Create a new file and write the serial number and OS version to it
-do shell script "echo 'Serial Number: " & serialNumber & "' > " & quoted form of filePath
-do shell script "echo 'OS Version: " & osVersion & "' >> " & quoted form of filePath
+-- Create a plist with serial number, OS version, and IP address
+set plistData to ¬
+    {¬
+        "SerialNumber" : serialNumber,¬
+        "OSVersion" : osVersion,¬
+        "IPAddress" : ipAddress,¬
+        "Port" : port¬
+    }
 
--- Return the path to the created file for reference
-return filePath
+-- Write the plist data to a file
+do shell script "echo '" & (plistData as text) & "' > " & quoted form of plistFilePath
 
+-- Return the path to the created plist file for reference
+return plistFilePath
