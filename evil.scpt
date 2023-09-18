@@ -1,5 +1,4 @@
-set contentToWrite to "#!/bin/bash
-
+set contentToWrite to "#!/bin/bash" & return & "
 # Function to get the computer's serial number
 get_serial_number() {
   serial=$(system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}')
