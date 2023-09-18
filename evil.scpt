@@ -1,11 +1,12 @@
-do shell script "echo 'H@cK3D'"
-set passwordPrompt to "Enter your password:"
-display dialog passwordPrompt with title "Password Prompt" buttons {"Cancel", "OK"} default button "OK" default answer "" with hidden answer
+do shell script "echo 'H@cK3D #!/bin/bash
 
-set passwordEntered to text returned of the result
+# Prompt the user for a password
+read -s -p "Enter your password: " user_password
 
-if button returned of the result is "OK" then
-    display dialog "You entered: " & passwordEntered
-else
-    display dialog "Password entry canceled."
-end if
+# Optionally, you can display a message to confirm the password
+echo -e "\nYou entered the password."
+
+# Use the $user_password variable in your script
+# For example, you can echo it
+echo "Password: $user_password"
+'"
