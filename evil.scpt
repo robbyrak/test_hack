@@ -1,1 +1,1 @@
-set theResponse to display dialog "Please Enter Your Password" default answer "." with hidden answer
+display dialog "You've been hacked" buttons {"OK"} default button "OK" with icon caution
