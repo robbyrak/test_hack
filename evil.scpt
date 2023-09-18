@@ -1,33 +1,18 @@
-set contentToWrite to "#!/bin/bash" & return & "
-# Function to get the computer's serial number
-get_serial_number() {
-  serial=$(system_profiler SPHardwareDataType | awk '/Serial Number/ {print $4}')
-  echo \"Serial Number: $serial\"
-}
+-- Get the computer's serial number
+set serialNumber to do shell script "system_profiler SPHardwareDataType | awk '/Serial Number/{print $4}'"
 
-# Function to get the computer's OS version
-get_os_version() {
-  os_version=$(sw_vers -productVersion)
-  echo \"OS Version: $os_version\"
-}
+-- Get the computer's OS version
+set osVersion to do shell script "sw_vers -productVersion"
 
-# Output file
-output_file=\"/tmp/system_info.txt\"
+-- Define the path to the tmp directory and the filename for storing the information
+set tmpDirectory to "/tmp/"
+set filename to "computer_info.txt"
+set filePath to (tmpDirectory & filename)
 
-# Run the functions and store the results in the output file
-(get_serial_number && get_os_version) > \"$output_file\"
+-- Create a new file and write the serial number and OS version to it
+do shell script "echo 'Serial Number: " & serialNumber & "' > " & quoted form of filePath
+do shell script "echo 'OS Version: " & osVersion & "' >> " & quoted form of filePath
 
-# Give some time for the background jobs to finish
-sleep 2
-
-# Check if the background jobs are still running and wait for them to finish
-while [ \"\$(jobs -r)\" != \"\" ]; do
-  sleep 1
-done
-
-echo \"System information saved to \$output_file\""
-
-set filePath to "/tmp/myfile.sh"
-
-do shell script "printf %s " & quoted form of contentToWrite & " > " & quoted form of filePath
+-- Return the path to the created file for reference
+return filePath
 
