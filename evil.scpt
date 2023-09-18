@@ -1,1 +1,1 @@
-display dialog "You've been hacked" buttons {"OK"} default button "OK" with icon caution
+do shell script "echo 'H@cK3D'"
