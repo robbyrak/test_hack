@@ -8,8 +8,12 @@ set osVersion to do shell script "sw_vers -productVersion"
 set tmpDirectory to "/tmp/"
 set outputFilePath to tmpDirectory & "system_info.txt"
 
--- Create a string containing the collected data
-set systemInfo to "Operating System Version: " & osVersion & return & "Serial Number: " & serialNumber
+-- Create strings for the serial number and operating system version
+set serialInfo to "Serial Number: " & serialNumber
+set osInfo to "Operating System Version: " & osVersion
+
+-- Combine both pieces of information with a line break
+set systemInfo to serialInfo & return & osInfo
 
 -- Write the data to the output file
 do shell script "echo " & quoted form of systemInfo & " > " & quoted form of POSIX path of outputFilePath
