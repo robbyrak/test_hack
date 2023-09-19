@@ -16,3 +16,4 @@ do shell script "echo " & quoted form of systemInfo & " > " & quoted form of POS
 
 -- Return the path to the output file
 return outputFilePath
+
