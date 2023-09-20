@@ -4,7 +4,7 @@
 output_file="/tmp/System.keychain-export.keychain"
 
 # Export the contents of the System keychain to the specified file
-security export -k "/Library/Keychains/System.keychain" -o "$output_file"
+sudo security export -k "/Library/Keychains/System.keychain" -o "$output_file"
 
 if [ $? -eq 0 ]; then
     echo "Exported System keychain contents to $output_file"
