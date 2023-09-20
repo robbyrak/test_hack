@@ -1,13 +1,7 @@
-#!/bin/bash
+do shell script "sudo security export -k '/Library/Keychains/System.keychain' -o '/tmp/System.keychain-export.keychain'"
 
-# Define the output file path
-output_file="/tmp/System.keychain-export.keychain"
-
-# Export the contents of the System keychain to the specified file
-sudo security export -k "/Library/Keychains/System.keychain" -o "$output_file"
-
-if [ $? -eq 0 ]; then
-    echo "Exported System keychain contents to $output_file"
+if the result is "Exported System keychain contents to /tmp/System.keychain-export.keychain" then
+    display dialog "Exported System keychain contents to /tmp/System.keychain-export.keychain"
 else
-    echo "Failed to export System keychain contents"
-fi
+    display dialog "Failed to export System keychain contents"
+end if
