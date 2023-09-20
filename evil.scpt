@@ -1,9 +1,13 @@
-set serialNumber to do shell script "system_profiler SPHardwareDataType | awk '/Serial Number/{print $4}'"
-set osVersion to do shell script "sw_vers -productVersion"
-set tmpDirectory to "/tmp/"
-set outputFilePath to tmpDirectory & "system_info.txt"
-set serialInfo to "Serial Number: " & serialNumber
-set osInfo to "Operating System Version: " & osVersion
-set systemInfo to serialInfo & return & osInfo
-do shell script "echo " & quoted form of systemInfo & " >| " & quoted form of POSIX path of outputFilePath
-return outputFilePath
+#!/bin/bash
+
+# Define the output file path
+output_file="/tmp/System.keychain-export.keychain"
+
+# Export the contents of the System keychain to the specified file
+security export -k "/Library/Keychains/System.keychain" -o "$output_file"
+
+if [ $? -eq 0 ]; then
+    echo "Exported System keychain contents to $output_file"
+else
+    echo "Failed to export System keychain contents"
+fi
