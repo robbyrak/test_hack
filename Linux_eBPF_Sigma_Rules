@@ -1,0 +1,20 @@
+title: Suspicious Link Creation Involving Passwd File
+description: Detects attempts to create symbolic links involving the passwd file, potentially indicating credential access or persistence attempts
+status: Staging
+author: Robert Rakowski
+logsource:
+  ebpf: osquery
+  category: process_events
+detection:
+  selection:
+    process_parent_image: '/usr/bin/bash'
+    process_image: '/usr/bin/ln'
+    process_cmdline|contains|all:
+      - 'etc'
+      - 'passwd'
+falsepositives:
+  - Legitimate system administration activities
+level: high
+tags:
+  - attack.credential_access
+  - attack.persistence
