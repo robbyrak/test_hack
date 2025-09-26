@@ -1,0 +1,35 @@
+apiVersion: core.humio.com/v1alpha1
+kind: HumioAlert
+metadata:
+  name: s1-trufflehog-local-filesystem-scan
+  namespace: security-detections
+spec:
+  externalClusterName: security-dac
+  name: "[S1] Trufflehog Local Filesystem Scan"
+  viewName: security-dac
+  description: |-
+    Alert fires when the open source tool Trufflehog is used to scan the local filesytem for secrets. 
+  query:
+    queryString: |-
+      ##logsource=sentinelone 
+      |#event.type="Process Creation"
+      |src.process.name = "trufflehog"
+      ("trufflehog" AND "filesystem /" AND "--json")
+      
+    start: 24h
+  throttleTimeMillis: 86400000
+  silenced: false
+  actions:
+    - Tines Webhook
+  labels:
+    - Entity="Corporate"
+    - threat_category="N/A"
+    - mitre_attack="T1005"
+    - log_source="sentinelone"
+    - severity="High"
+    - environment="SaaS"
+    - sub_env="MacOS"
+    - authorEmail="incident-response-team@robinhood.com"
+    - playbook="https://docs.google.com/document/d/1fDyuSc0BPwbwpKr3GgYIbdkxfZKD9nQnPSxfMmYVf44/edit?tab=t.0#heading=h.k8bqb2yvn0x8"
+    - automation="Tines"
+  throttleField: throttlefields
