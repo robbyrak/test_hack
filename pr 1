@@ -1,0 +1,39 @@
+apiVersion: core.humio.com/v1alpha1
+kind: HumioAlert
+metadata:
+  name: threat-github-anomalous-workflow-pushed
+  namespace: security-detections
+spec:
+  externalClusterName: security-dac
+  name: Threat - [GitHub] Anomalous Workflow Pushed - Rule
+  viewName: security-dac
+  description: |-
+    Detect when a non-standard new workflow is pushed.
+  query:
+    queryString: |-
+      #logsource=github
+      | action="workflows.created_workflow_run"
+      | event=push
+      | name=/^\.github\/workflows\/.*\.yml$/
+      | name != ".github/workflows/restart.yml"
+      | name != ".github/workflows/release.yml"
+      | name != ".github/workflows/push.yml"
+      | name != ".github/workflows/rollback.yml"
+      | name != ".github/workflows/push-branch.yml"
+    start: 24h
+  throttleTimeMillis: 86400000
+  silenced: false
+  actions:
+    - Tines Webhook
+  labels:
+    - Entity="Corporate"
+    - severity="High"
+    - log_source="github"
+    - is_backtested=true
+    - environment="prod"
+    - mitre_attack="T1213.003"
+    - authorEmail="incident-response-team@robinhood.com"
+    - playbook="https://docs.google.com/document/d/1-M2qHFSnEMDiQdb6Y6PQhc0FDapDwggq7YheE0IaWuc/edit?tab=t.0"
+    - automation="Tines"
+
+  throttleField: throttle
